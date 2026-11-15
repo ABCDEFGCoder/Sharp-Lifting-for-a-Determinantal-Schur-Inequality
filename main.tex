@@ -1,0 +1,941 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}[section]
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\pin}{\operatorname{pin}}
+\newcommand{\osc}{\operatorname{osc}}
+\newcommand{\HS}{\mathrm{HS}}
+\newcommand{\spn}{\operatorname{span}}
+\allowdisplaybreaks[2]
+
+\title{\textbf{Sharp Lifting for a Determinantal Schur Inequality}}
+\author{Zixuan Ye \and GPT-6.1 Sol \and GPT-6 Astra}
+\date{November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For partitions of the identity by positive semidefinite matrices, we determine exactly when the scalar sharp constant of a cubic-to-quadratic determinant quotient remains sharp for matrices. The outer transition is governed by a gap for sums of projections. A rational trace potential on a projection dilation detects this gap, and quantitative descent of the same potential controls the error introduced by the inverse in the determinant comparison. The endpoint inequality and its equality cases hold in every finite dimension.
+\end{abstract}
+
+\section{Introduction}
+
+Let \(m,n\) be positive integers. An admissible tuple consists of Hermitian
+matrices \(A_i\succeq0\) on \(\mathbb C^{n\times n}\) with \(\sum_{i=1}^m A_i=I\).
+Write
+\[
+S=\sum_i A_i^2,\qquad R=\sum_i A_i^3,\qquad
+C_m(t)=\inf_{n,A}\left(\frac{\det(I+tR)}{\det S}\right)^{1/n}
+\quad(t\ge0).
+\]
+The infimum is over all positive dimensions and admissible tuples.
+Here and below \(I\) denotes the identity on the space in question. The
+denominator is positive, since \(S\succeq I/m\). Mixing every \(A_i\) with
+\(I/m\) and then letting the mixing parameter tend to zero shows that the
+infimum is the same if each \(A_i\) is required to be positive definite.
+The sharp scalar constant is
+\[
+c_m(t)=\min_{1\le j\le m}(j+t/j).
+\]
+We prove this scalar formula below. We call \(t\) a \emph{lifting parameter} if
+\(C_m(t)=c_m(t)\), and denote the set of such parameters by \(\mathcal L_m\).
+
+The problem at \(m=3,t=6\), posted by math110 \cite{math110}, is often
+called Xixi's determinantal Schur inequality. Cubesteak \cite{cube}
+proved it by passing to an inverse-trace inequality and a trace
+sum of squares. Ye and Astra \cite{anchor} extended that argument
+to the anchor \(t=m(m-1)\). These results handle a specified
+parameter. The lifting question asks when \emph{any} sharp scalar
+inequality of this family survives the passage to matrices.
+
+\begin{theorem}[Lifting set]\label{th:lifting}
+For \(m=1,2\) one has \(\mathcal L_m=[0,\infty)\). For every \(m\ge3\),
+\[
+\displaystyle
+\mathcal L_m=\left[0,\frac{m}{m-1}\right]
+\ \cup\ \{j^2: j\in\mathbb Z,\ 2\le j\le m-2\}
+\ \cup\ [m(m-2),\infty).
+\]
+For every \(t\notin\mathcal L_m\), a finite-dimensional admissible tuple
+has determinant quotient strictly below the scalar sharp constant.
+\end{theorem}
+
+\begin{theorem}[The right endpoint]\label{th:endpoint}
+Let \(m\ge3\), \(k=m-1\), \(T=k^2-1\), \(b=T/k\), and \(G=k+b\).
+For every admissible tuple,
+\begin{equation}\label{eq:upper}
+G\Tr\big((I+TR)^{-1}S\big)\le n,\qquad
+\det(I+TR)\ge G^n\det S.
+\end{equation}
+Equality in either inequality holds precisely for orthogonal direct sums
+of the following two types of tuples:
+\begin{enumerate}
+\item A missing-color block: one entry is zero and all others equal \(I/k\).
+\item A simplex block: on \(\mathbf 1^\perp\subset\mathbb C^m\), where
+\(\mathbf 1=(1,\ldots,1)\), let \(Q_i\) be the projection onto the
+line spanned by \(e_i-\mathbf 1/m\), with \(e_i\) the \(i\)-th coordinate
+vector. The entries are \(b^{-1}(I-Q_i)\).
+\end{enumerate}
+Unitary conjugacy and arbitrary multiplicities of the blocks are allowed.
+\end{theorem}
+
+The two equality types have different origins. If \(\sum_i\Pi_i=\alpha I\)
+for orthogonal projections, then \(A_i=\Pi_i/\alpha\) gives the quotient
+\(\alpha+t/\alpha\). At \(t=T\) the integer \(k\) and the noninteger \(b\)
+tie, with no realizable scalar sum of \(m\) projections strictly between them.
+This is an outer gap in the theory of sums of projections \cite{krs}. An
+elementary rank argument for it appears in Section~\ref{sec:potential}.
+The same projection theory supplies finite-dimensional examples that
+remove all parameters outside the stated set.
+
+The gap alone cannot give an operator inequality. Indeed, choose
+\(\alpha\in(b,k)\) and rank-one projections \(P_1,\ldots,P_k\) on
+\(\mathbb C^2\) onto the unit vectors
+\[
+v_j=\big(\sqrt{\alpha/k},\,\exp(2\pi\mathrm{i}j/k)\sqrt{1-\alpha/k}\big),
+\quad j=1,\ldots,k.
+\]
+Their sum is \(\operatorname{diag}(\alpha,k-\alpha)\). Set \(A_j=P_j/\alpha\)
+for \(j\le k\), and \(A_m=I-\sum_{j\le k}A_j\succeq0\); here \(\alpha>k/2\).
+On the first coordinate \(S\) and \(R\) act as \(1/\alpha\) and
+\(1/\alpha^2\), respectively. Thus \(I+TR-GS\) has a negative eigenvalue.
+The argument must use compensation across directions of the underlying
+space.
+
+Our method obtains this compensation from a single spectral potential.
+At its minimum on a space of projections, stationarity separates the
+possible negative contribution into two spectral levels. The projection
+gap controls their relative mass. Away from a minimum, the potential
+quantifies how far one can descend by a unitary variation. This estimate
+pays for the cross term when passing to the inverse trace. The
+interpolation in Section~\ref{sec:transfer} is exact at both equality
+levels, so this step preserves the endpoint constant.
+This proof works for \(m\ge4\). We include the three-term proof from the
+project notes \cite{round8}, and the anchor of \cite{anchor}, with their
+finite algebra given in the appendices. The proofs require no external
+computational data.
+
+\section{Preliminaries}\label{sec:prelim}
+
+Write \(\|Y\|_{\HS}^2=\Tr(Y^*Y)\), with the ordinary unnormalized trace.
+For Hermitian matrices, \(\preceq\) and \(\prec\) denote the semidefinite
+and definite orders. A projection means a self-adjoint idempotent;
+different projections in a family need not be orthogonal to each other.
+We will use
+\begin{equation}\label{eq:moments}
+ I/m\preceq S\preceq I,\qquad
+ R-S^2=\sum_i(A_i-S)A_i(A_i-S)\succeq0.
+\end{equation}
+The first bounds follow from \(\sum_i(A_i-I/m)^2=S-I/m\) and
+\(A_i^2\preceq A_i\), respectively. The identity follows by expanding
+the sum and using \(\sum_i A_i=I\) and \(\sum_i A_i^2=S\).
+
+To check the scalar formula, fix \(t>0\), put \(\gamma=\min_j(j+t/j)\),
+and minimize \(1+t\sum_i a_i^3-\gamma\sum_i a_i^2\) on the probability
+simplex. At a minimum, on the positive support, all values
+\(3ta_i^2-2\gamma a_i\) coincide. If there are two distinct positive
+values \(x<y\), then \(3t(x+y)=2\gamma\), and the second derivatives
+\(6tx-2\gamma\) and \(6ty-2\gamma\) are opposite, the former negative.
+Two entries at \(x\) would allow a negative second variation by changing
+them in opposite directions. If the unique entry at \(x\) is accompanied
+by \(l\ge2\) entries at \(y\), changing it with speed \(1\) and those at
+\(y\) with speed \(-1/l\) again gives a negative second variation.
+Thus the support has size two, \(x+y=1\), and \(\gamma=3t/2\). In
+that case the objective is constant on the corresponding edge, so
+the equal-positive-value point on the edge is also a minimum.
+At a tuple with \(j\) equal positive entries the objective is
+\((j+t/j-\gamma)/j\ge0\); a minimizing \(j\) gives equality. At
+\(t=0\) the formula follows from \(\sum_i a_i^2\le1\).
+The minimizing line \(j+t/j\) is active for
+\(j(j-1)\le t\le j(j+1)\), with the first and last phases extended to
+\(0\) and \(+\infty\), respectively. Indeed, the difference between the
+line for \(l\) and the line for \(j\) is
+\((l-j)(1-t/(lj))\).
+
+For reductions to the inverse trace, set \(M_t=I+tR\).
+For \(\gamma>0\) and Hermitian \(X\), define
+\[
+\mathcal Q_{t,\gamma}(X)=
+\Tr(\gamma I-2\gamma XS+XM_tXS).
+\]
+Completing the square gives
+\begin{equation}\label{eq:completion}
+\mathcal Q_{t,\gamma}(X)
+=\gamma\big(n-\gamma\Tr(M_t^{-1}S)\big)
++\|M_t^{1/2}(X-\gamma M_t^{-1})S^{1/2}\|_{\HS}^2.
+\end{equation}
+Thus nonnegativity for all \(X\) is equivalent to the inverse-trace
+bound.
+
+Set \(H=\gamma^{-1}S^{-1/2}M_tS^{-1/2}\).
+The scalar inequality \(\log x\ge1-1/x\) gives
+\begin{equation}\label{eq:log}
+\log\det H\ge n-\Tr(H^{-1})=n-\gamma\Tr(M_t^{-1}S).
+\end{equation}
+In particular the inverse-trace bound implies the determinant bound,
+and equality in the determinant bound implies equality in the inverse-trace bound.
+
+\section{A positive trace potential and its descent}\label{sec:potential}
+
+For \(m\ge3\), let \(k=m-1\) and set
+\[
+e=k^{-2},\quad p=1-e,\quad C=1+p,\quad b=kp,\quad
+r=1/k,\quad s=1/b.
+\]
+Thus \(T=k^2p\), \(G=kC\), and \(rs=1/T\). We first record the rank
+estimate used both for positivity and for equality, including \(k=2\).
+
+\begin{lemma}[Rank of a sum of complementary projections]\label{lem:rank}
+Let \(Q_1,\ldots,Q_m\) be orthogonal projections on an \(N\)-dimensional
+space and \(Y=\sum_iQ_i\succeq I\). If
+\(\ran Q_i\cap\ker(Y-I)=\{0\}\) for all \(i\), then
+\(\Tr Y\ge (m/k)N\). In particular,
+\[
+\sum_i\Pi_i\prec kI
+\quad\Longrightarrow\quad
+\sum_i\rank\Pi_i\le bN
+\]
+for orthogonal projections \(\Pi_i\).
+\end{lemma}
+
+\begin{proof}
+Let \(J:\bigoplus_i\ran Q_i\to\mathbb C^N\) be the sum of the inclusions,
+so \(JJ^*=Y\). Put \(\nu=\sum_i\rank Q_i\). The projection
+\(I-J^*Y^{-1}J\) has rank \(\nu-N\).
+Its \(i\)-th diagonal block is the compression of \(I-Y^{-1}\)
+to \(\ran Q_i\), and is positive definite there by the hypothesis.
+Consequently \(\rank Q_i\le\nu-N\); summing yields \(\nu\ge mN/k\).
+Apply this to \(Q_i=I-\Pi_i\) for the last claim.
+\end{proof}
+
+For the potential and its transfer we now take \(k\ge3\).
+Let \(\mathcal K\) be the orthogonal sum of \(m\) finite-dimensional
+spaces with coordinate projections \(E_i\). Put
+\(\pin(Y)=\sum_i E_iYE_i\). For any orthogonal projection \(P\)
+on \(\mathcal K\), define \(D=k\pin(P)\), so \(0\preceq D\preceq kI\).
+For \(0\le u\le k\) use the functions
+\begin{equation}\label{eq:func}
+\begin{gathered}
+F(u)=1+pu^2,\qquad B(u)=1-2pu+pu^2=e+p(u-1)^2,\\
+d(u)=(u-1)(pu-1)=F(u)-Cu,\qquad f(u)=u\psi(u),\\
+\psi(u)=d(u)/B(u)=1-eu/B(u).
+\end{gathered}
+\end{equation}
+
+\begin{lemma}[Positivity]\label{lem:potential}
+For every such \(P\), \(L_0(P)=k^{-1}\Tr f(D)\ge0\).
+\end{lemma}
+
+\begin{proof}
+Minimize \(L_0\) over projections of the same rank. This is a
+compact set, and the potential is smooth. Along
+\(P_a=\exp(aH)P\exp(-aH)\), for skew-Hermitian \(H\),
+the derivative at \(0\) is \(\Tr([P,f'(D)]H)\): the factor \(k\)
+cancels and \(f'(D)\) is block diagonal. At a minimum this implies
+\([P,f'(D)]=0\) by taking \(H=[P,f'(D)]\).
+Split into the eigenspaces of \(f'(D)\). Each reduces \(P,D\)
+and the coordinate projections, and the same pinching relation
+holds on each block.
+
+Only a block with a spectral value \(1<v<1/p\) of \(D\) can
+contribute negatively. Put \(q(u)=u(1-pu)/B(u)^2\). Then
+\begin{equation}\label{eq:qprime}
+ f'(u)=1-2e q(u),\qquad q'(u)=\frac{1-3pu^2+2p^2u^3}{B(u)^3}.
+\end{equation}
+On \((0,1/p)\) the numerator of \(q'\) strictly decreases, from
+\(1\) to \(1-1/p<0\); at \(1\) it is \(e(1-2p)<0\).
+Since \(q(0)=q(1/p)=0\), \(q\) is strictly increasing and then strictly
+decreasing on this interval. Outside it, \(q\le0\) for \(u\ge0\).
+Thus all spectral values in the block are in \(\{u,v\}\), where
+\(0<u<1\) is the other solution of \(q(u)=q(v)>0\).
+
+Compressing \(E_i\) to \(\ran P\) in this block gives an admissible
+tuple \(\widetilde A_i\) on a space of dimension \(N=\rank P>0\).
+The nonzero spectra of these compressions equal those of the
+corresponding diagonal blocks of \(D/k\), with multiplicities:
+\(PE_iP\) and \(E_iPE_i\) are the two Gram matrices of \(E_iP\).
+Let \(\Pi_i\) be the spectral projections of \(\widetilde A_i\)
+for \(v/k\). From \(\sum_i\widetilde A_i=I\) we get
+\(\sum_i\Pi_i\preceq (k/v)I\prec kI\).
+By Lemma~\ref{lem:rank}, the fraction
+\(\theta=(v/k)\sum_i\rank\Pi_i/N\) of the trace carried by this
+level is at most \(pv<1\). This is the step that constrains the
+mass using the actual matrices of the dilation.
+
+Set \(\xi=(1/v-p)/e\in(0,1)\) and \(\eta=(1/u-p)/e>1\).
+Under \(x=1/(p+ez)\), \(q(x)=z(p+ez)^2/(e(p+ez^2)^2)\).
+This is strictly increasing and then strictly decreasing for \(z>0\).
+Its value at \(1/\xi\) exceeds its value at \(\xi\): after taking
+positive square roots and cross multiplying, the difference in the
+numerators is
+\[
+(p\xi+e)(p+e\xi^2)-(p+e\xi)(p\xi^2+e)
+=(p^2-e^2)\xi(1-\xi)>0.
+\]
+Thus \(1/\xi<\eta\), because \(\xi,\eta\) are the two points of
+the given level. Equivalently, \((1-pu)(1-pv)>e^2uv\).
+Using \(q(u)=q(v)\) yields
+\(eu/B(u)<(1-pv)/B(v)\), or
+\(\psi(u)>pv(v-1)/B(v)\). The contribution per dimension of the block is
+\[
+(1-\theta)\psi(u)+\theta\psi(v)
+\ge (1-pv)\psi(u)+pv\psi(v)>0.
+\]
+The first inequality uses \(\psi(u)>0>\psi(v)\); the second follows
+from \(\psi(v)=-(v-1)(1-pv)/B(v)\). All other blocks give
+nonnegative contributions, since \(f\ge0\) off \((1,1/p)\).
+This proves positivity at the minimum and hence at every \(P\).
+\end{proof}
+
+\begin{lemma}[Descent]\label{lem:descent}
+Let \(g=\|P f'(D)(I-P)\|_{\HS}\) and \(L_*=15k/(4e)\). Then
+\(L_0(P)\ge g^2/L_*\).
+\end{lemma}
+
+\begin{proof}
+Use the same unitary path with \(H=[P,f'(D)]\). Its derivative
+at zero is \(-\|H\|_{\HS}^2=-2g^2\). Also \(H\) is off diagonal
+relative to \(P_a\) for all \(a\), because it is so relative to \(P\)
+and commutes with \(\exp(aH)\). In particular,
+\(\|[H,P_a]\|_{\HS}=\|H\|_{\HS}\).
+The second derivative of \(L_0(P_a)\) is bounded above by
+\[
+\big(k\sup_{[0,k]} f''+\osc_{[0,k]} f'\big)\|H\|_{\HS}^2.
+\]
+For the term from differentiating \(f'(D_a)\), the trace Hessian in
+a basis diagonalizing \(D_a\) is the sum of the squared moduli of
+the entries of \(\dot D_a\), weighted by the divided differences
+of \(f'\). Those differences are at most \(\sup f''\);
+also \(\|\dot D_a\|_{\HS}\le k\|[H,P_a]\|_{\HS}\).
+The divided-difference formula follows by differentiating monomials
+and inverses in a diagonal basis, including the limiting derivative
+at equal eigenvalues. For the acceleration term,
+\([H,[H,P_a]]\) has diagonal blocks \(-2AA^*,2A^*A\)
+if the upper off-diagonal block of \(H\) is \(A\). Pairing with
+\(f'(D_a)\), which is block diagonal for the \(E_i\)-pinching,
+bounds this term by \(\osc(f')\|H\|_{\HS}^2\).
+
+For explicit constants, put \(z=u-1\), \(w=\sqrt{p/e}\,|z|\).
+The function \(w/(1+w^2)^2\) has maximum \(3\sqrt3/16<1/3\)
+for \(w\ge0\); the same bound applies to \(w/(1+w^2)^3\).
+Equation~\eqref{eq:qprime} gives \(\osc(f')\le4k(1+k/3)\).
+The numerator of \(q'\) is
+\(e(1-2p)-6pe z+p(6p-3+2pz)z^2\).
+For \(-1\le z\le0\) the last two terms are nonnegative,
+so \(e f''\le2(2p-1)\). For \(z\ge0\), discard the last
+term and use the bound for \(w/(1+w^2)^3\) to get
+\(e f''\le2(2p-1)+4\sqrt{pe}\). Therefore
+\[
+ k\sup f''+\osc(f')\le
+ \frac{k}{e}\left(2+4\sqrt{pe}+\frac{4}{3k}\right)\le L_* .
+\]
+The last inequality follows for \(k\ge4\) by \(\sqrt{pe}\le1/k\),
+and for \(k=3\) by \(\sqrt{pe}=\sqrt8/9<8/25\).
+Integrating the second derivative bound to \(a=1/L_*\)
+gives \(0\le L_0(P_{1/L_*})\le L_0(P)-\|H\|_{\HS}^2/(2L_*)\)
+by Lemma~\ref{lem:potential}. The conclusion follows.
+\end{proof}
+
+\section{Transfer to the inverse trace}\label{sec:transfer}
+
+For an admissible tuple let
+\(Vx=(A_1^{1/2}x,\ldots,A_m^{1/2}x)\) in
+\(\mathcal K=\bigoplus_{i=1}^m\mathbb C^n\), and put \(P=VV^*\).
+The map \(V\) is an isometry, and
+\[
+D=k\pin(P)=k\operatorname{diag}(A_i),\qquad
+V^*DV=kS,\quad V^*D^2V=k^2R.
+\]
+The compression \(M=PF(D)P|_{\ran P}\succeq I\) is thus
+unitarily equivalent to \(I+TR\). In products on \(\mathcal K\)
+we extend inverses of \(M\) by zero on \((\ran P)^\perp\).
+Put \(U=n-G\Tr((I+TR)^{-1}S)\), so
+\(U=\Tr(M^{-1}P d(D)P)\).
+
+Set \(\rho=e/C\), \(\phi=\rho\psi\).
+The identity \(B-\rho F=(2p/C)d\) gives the nonnegative function
+\begin{equation}\label{eq:J}
+J(u)=d(u)-F(u)\phi(u)=\frac{2p}{C}\frac{d(u)^2}{B(u)}.
+\end{equation}
+Inserting \(P+(I-P)\) between \(F(D)\) and \(\phi(D)\) yields
+\begin{equation}\label{eq:split}
+\begin{split}
+U&=\rho L_0(P)+\mathcal D+\mathcal X,\qquad
+ \mathcal D=\Tr(M^{-1}P J(D)P),\\
+\mathcal X&=\Tr(M^{-1}P F(D)(I-P)\phi(D)P).
+\end{split}
+\end{equation}
+Indeed, \(\Tr(P\phi(D)P)=k^{-1}\Tr(D\phi(D))=\rho L_0(P)\)
+by block diagonality. In particular \(\mathcal X\) is real.
+The nonnegative term \(\mathcal D\) is an exact square slack, but
+\(\mathcal X\) need not have a favorable sign.
+
+To use Lemma~\ref{lem:descent}, we interpolate \(F\) by an
+affine function of \(f'\). At \(u=1,1/p\), where \(d=0\),
+\(f'\) takes the values \(-1,1\), respectively. With
+\(c_F=C^2/(2p)\) and \(a_F=Ce/(2p)\), direct substitution gives
+\begin{equation}\label{eq:interpol}
+F=c_F+a_F f'+W,\qquad
+W(u)=\frac{d(u)}p\left[-1+C p u(u-1)\frac{B(u)+e}{B(u)^2}\right].
+\end{equation}
+The crucial factor \(d\) in \(W\) is shared by the square
+slack~\eqref{eq:J}. Let \(Z(u)=\phi(u)/\sqrt{J(u)}\) when
+\(d(u)\ne0\), and set \(Z=0\) at the roots. Then
+\(\phi=Z\sqrt J\) and \(|Z|\le z_*:=\sqrt{e/(2pC)}\).
+We claim that
+\begin{equation}\label{eq:Wbound}
+z_*|W(u)|\le(4/5)\sqrt{J(u)}\quad(0\le u\le k).
+\end{equation}
+At the roots both sides vanish. Elsewhere the quotient on the
+left by \(\sqrt J\) is \(\sqrt{eB}\,|A-1|/(2p^2)\), where
+\(A=C p u(u-1)(B+e)/B^2\).
+Writing \(w=\sqrt{p/e}|u-1|\) gives
+\[
+\sqrt{eB}|A|=C\sqrt{pe}\,u\,\Lambda(w),\quad
+\Lambda(w)=\frac{w(w^2+2)}{(1+w^2)^{3/2}}
+\le \min\left(\frac{11}{10},\,1+\frac{1}{2(1+w^2)}\right).
+\]
+For the first bound, \(32(1+w^2)^3-27w^2(w^2+2)^2
+=(w^2-2)^2(5w^2+8)\) and \(32/27<(11/10)^2\).
+For the second set \(x=1/(1+w^2)\); then
+\(\Lambda^2=(1-x)(1+x)^2\le1+x\).
+When \(u\le1\), \(\sqrt{eB}\,|A-1|\le16/(5k)\).
+When \(u\ge1\) and \(A\le1\), it is at most \(1\)
+since \(0\le A\) and \(B\le k^2\). Both bounds are less than \(8p^2/5\).
+In the last case, \(u\ge1\) and \(A>1\),
+\[
+\sqrt{eB}(A-1)\le \sqrt{pe}\big[(C\Lambda(w)-1)u+1\big].
+\]
+For \(k\ge4\) this is at most
+\(\sqrt p(6/5+1/k)\le(29/20)\sqrt p<8p^2/5\)
+by \((29/20)^2<(64/25)(15/16)^3\).
+For \(k=3\), on \(1\le u\le5/2\) the bracket is at
+most \(133/36\) using \(\Lambda\le11/10\); on \(5/2\le u\le3\),
+\(w^2\ge18\), so \(\Lambda\le37/36\) and the bracket is at most
+\(413/108\). The final bound on both intervals is
+\((8/25)(413/108)<512/405=8p^2/5\). This proves~\eqref{eq:Wbound}.
+
+Now use Hilbert--Schmidt Cauchy--Schwarz in~\eqref{eq:split} with
+\(\phi=Z\sqrt J\):
+\[
+|\mathcal X|\le\sqrt{\mathcal D}\,
+\|M^{-1/2}P F(D)(I-P)Z(D)\|_{\HS}.
+\]
+The constant term in~\eqref{eq:interpol} vanishes in this norm.
+The term \(a_Ff'\) is bounded by \(a_F z_*g\) using \(M\succeq I\);
+the remainder is bounded by
+\[
+z_*\|M^{-1/2}P W(D)\|_{\HS}
+\le(4/5)\|M^{-1/2}P\sqrt{J(D)}\|_{\HS}
+=(4/5)\sqrt{\mathcal D}.
+\]
+The first bound uses the operator norm of \((I-P)Z(D)\);
+the second follows from the pointwise square bound~\eqref{eq:Wbound}
+and positivity of the trace pairing with \(PM^{-1}P\).
+With \(\beta=a_F z_*\), in particular \(\beta^2=Ce^3/(8p^3)\),
+Lemma~\ref{lem:descent} then gives
+\begin{equation}\label{eq:margin}
+\begin{split}
+ U&\ge \rho L_0(P)+\tfrac15\mathcal D-\beta\sqrt{\mathcal D}\,g\\
+ &\ge \left(\frac{4e^2}{15kC}-\frac{5Ce^3}{32p^3}\right)g^2
+       +\frac15\left(\sqrt{\mathcal D}-\frac52\beta g\right)^2\ge0.
+\end{split}
+\end{equation}
+The coefficient of \(g^2\) is strictly positive:
+\(128kp^3>75(1+p)^2\) at \(k=3,\ p=8/9\), and
+\(kp^3/(1+p)^2\) increases with \(k\).
+This proves~\eqref{eq:upper} for \(m\ge4\) by~\eqref{eq:log}.
+
+The quantitative descent is useful even though simple comparison of
+the two trace expressions can fail in dimension one. For instance, take
+\(k\) positive weights \(a_i=(1+z_i)/k\) and one zero, with
+\((z_1,z_2,z_3)=(2\epsilon,-\epsilon,-\epsilon)\) and all other
+\(z_i=0\). Put \(v_j=k^{-1}\sum_{i=1}^k z_i^j\).
+Then \(kS=1+v_2,\ k^2R=1+3v_2+v_3\), so
+\(U=((2p-1)v_2+pv_3)/C+O(\epsilon^4)\).
+Expanding \(f(1+z)=-(1+z)z+(p/e)(1+z)^2z^2/(1+(p/e)z^2)\)
+in \(\rho L_0\) gives the same quadratic term but twice the cubic term.
+Thus \(U-\rho L_0=-6p\epsilon^3/(kC)+O(\epsilon^4)<0\) for
+sufficiently small \(\epsilon>0\). Estimate~\eqref{eq:margin}
+uses the precise nonnegative part of the potential that this direct
+comparison would discard.
+
+\subsection*{Rigidity at the endpoint}
+
+If \(U=0\), then \eqref{eq:margin} forces \(g=\mathcal D=0\).
+Since \(M^{-1}\) is positive definite on \(\ran P\),
+\(\Tr P J(D)=0\). This trace equals \(k^{-1}\Tr D J(D)\);
+hence all positive eigenvalues of all \(A_i\) lie in \(\{r,s\}\).
+Conversely that spectral condition implies \(I+TR-GS=\sum_i
+ A_i d(kA_i)=0\), with the polynomial \(d\) of~\eqref{eq:func}.
+The two equality conditions then coincide by~\eqref{eq:log}.
+Appendix~\ref{app:three} proves~\eqref{eq:upper} for \(m=3\)
+with the same spectral equality condition.
+
+Here is the decomposition of those spectral tuples, valid also for
+\(m=3\). Write \(A_i=rP_i+sQ_i\), where \(P_i,Q_i\) are
+orthogonal spectral projections for the two positive levels. Set
+\(C_s=\sum_iQ_i\) and \(Z_i=I-P_i-Q_i\). Using \(s/r=1+1/T\)
+and \(sC_s\preceq I\) gives
+\[
+Y=\sum_i Z_i=I+C_s/T,\qquad I\preceq Y\preceq (m/k)I .
+\]
+If \(v\in\ran Z_i\cap\ker C_s\), then \(Yv=v\), all other \(Z_jv=0\),
+and all \(Q_jv=0\). Such subspaces are mutually orthogonal
+and reduce every entry, producing missing-color blocks.
+On their orthogonal complement Lemma~\ref{lem:rank} applies
+to the \(Z_i\), so the trace and operator bounds give \(Y=(m/k)I\).
+Thus \(C_s=bI\) and \(P_i=0\) on the remaining space.
+
+Finally, on a remaining block of dimension \(N\), use
+\(J:\bigoplus_i\ran Z_i\to\mathbb C^N\) from
+Lemma~\ref{lem:rank}. Equality in its rank calculation forces
+each \(\rank Z_i=N/k=:l\). The orthogonal complement of
+the image of the isometry \(J^*Y^{-1/2}\) is an \(l\)-dimensional
+subspace with projection having diagonal blocks \(I_l/m\).
+An isometry onto that complement therefore has each coordinate
+component equal to \(1/\sqrt m\) times a unitary. By separate
+unitary changes of basis in the coordinate spaces, the complement
+becomes \(\mathbf 1\otimes\mathbb C^l\). The original space
+becomes \(\mathbf 1^\perp\otimes\mathbb C^l\), and \(Z_i\)
+is the \(i\)-th coordinate compression multiplied by \(m/k\).
+This is the normalized simplex projection tensored by \(I_l\).
+Conversely the normalized simplex projections sum to \((m/k)I\),
+since the unnormalized coordinate compressions sum to \(I\).
+Thus the simplex tuple is admissible, as is the missing-color tuple,
+and both have the stated equality spectra.
+
+\section{From the endpoints to the lifting set}\label{sec:set}
+
+For the left endpoint put \(a=m/(m-1)\), \(m\ge3\).
+We give a short proof of the required operator comparison.
+If \(B_1,\ldots,B_q\succeq0\) have sum \(D_0\preceq I\),
+work on \(\ran D_0\) and let \(L_i=D_0^{-1/2}B_iD_0^{-1/2}\).
+Then \(\sum_iL_i=I\), \(\sum_i L_i^2\preceq I\), and
+\(\sum_i L_i(I-D_0)L_i\succeq (I-D_0)/q\).
+The last inequality follows by summing
+\((L_i-I/q)(I-D_0)(L_i-I/q)\succeq0\).
+Conjugating the resulting bound for \(\sum_i L_iD_0L_i\) yields
+\(\sum_i B_i^2\preceq D_0-D_0(I-D_0)/q\), also on the original
+space since all \(B_i\) vanish on \(\ker D_0\).
+Use this with the \(k\) terms other than \(A_i\) to get
+\(S\preceq I-aA_i+aA_i^2\). Multiplying by \(A_i^{1/2}\) on
+both sides and summing gives \(I+aR\succeq aS+\mathcal E(S)\),
+where \(\mathcal E(X)=\sum_i A_i^{1/2}XA_i^{1/2}\) is positive,
+unital and trace preserving. By \eqref{eq:moments},
+for \(0\le t\le a\),
+\[
+ I+tR\succeq (1+t)((1-\theta)S+\theta\mathcal E(S)),
+ \qquad \theta=\frac{t}{a(1+t)} .
+\]
+The positive unital trace-preserving map on the right (after
+dividing by \(1+t\)) does not decrease the log determinant of \(S\):
+in a basis diagonalizing its output and a basis diagonalizing \(S\),
+each output eigenvalue is a convex combination of the input eigenvalues.
+The weights are nonnegative with row sums one by unitality and column
+sums one by trace preservation. Apply scalar concavity of \(\log\) and sum.
+Determinant monotonicity in the positive definite order now gives
+\(C_m(t)\ge1+t=c_m(t)\).
+
+For any \(1\le j\le m\), the point \(t=j^2\) lifts, because
+\[
+I+j^2R-2jS=(I-jS)^2+j^2(R-S^2)\succeq0 .
+\]
+For the right ray, Theorem~\ref{th:endpoint} proves the inverse-trace
+bound at \(T\). The anchor at \(t_1=m(m-1)\), with constant
+\(2m-1\), is proved in Appendix~\ref{app:anchor}.
+On \([T,t_1]\) the scalar line is \(\gamma=k+t/k\).
+For every fixed tuple and \(X\), \(\mathcal Q_{t,\gamma}(X)\)
+is affine in \(t\) along this line and is nonnegative at both endpoints
+by \eqref{eq:completion}. It is therefore nonnegative throughout.
+On \([t_1,\infty)\) the scalar line is \(\gamma=m+t/m\); the slope
+of \(\mathcal Q_{t,\gamma}(X)\) is at least
+\(m^{-1}\|I-S^{1/2}XS^{1/2}\|_{\HS}^2\), using \(R\succeq S/m\)
+from \eqref{eq:moments}. This proves lifting on the full right ray.
+In both outer regions and at all indicated square points, the
+scalar tuples already give sharpness.
+
+To exclude all other points we need only elementary finite-dimensional
+constructions in the spirit of \cite{krs}. If
+\(\sum_i\Pi_i=\alpha I\) for orthogonal projections, then
+\(A_i=\Pi_i/\alpha\) gives \(\alpha+t/\alpha\).
+Taking complements changes \(\alpha\) to \(m-\alpha\).
+For \(\alpha>1\), one can also realize \(\alpha/(\alpha-1)\):
+form \(J\) from the ranges of the \(\Pi_i\), and take the
+orthogonal complement of the image of \(J^*/\sqrt\alpha\).
+Its projection has coordinate diagonal blocks
+\((1-1/\alpha)I\). The coordinate compressions to this complement
+are therefore \(1-1/\alpha\) times projections and sum to \(I\);
+this follows from the nonzero-spectrum equality of the two Gram
+matrices as in Lemma~\ref{lem:potential}. The complement has positive
+dimension because \(\alpha>1\). Starting from \(m\) identity
+projections realizes \(a\), then \(b\) by taking complements.
+For four projections start from \(3\), and repeat the operation
+\(\alpha\mapsto4-\alpha/(\alpha-1)\) to realize \(2+1/l\) for every
+integer \(l\ge1\). Taking complements realizes \(2-1/l\).
+Padding with identities and zeros realizes \(j\pm1/l\)
+for \(2\le j\le m-2\).
+
+In the \(j=1\) phase, if \(t>a\), use \(\alpha=a\);
+in the \(j=k\) phase, if \(t<T\), use \(\alpha=b\).
+In each inner phase with \(2\le j\le m-2\), if \(t\ne j^2\),
+choose \(\alpha=j\pm1/l\) approaching \(j\) from the side
+with the sign of \(t-j^2\). In each case the difference
+\((\alpha-j)(1-t/(\alpha j))\) is strictly negative
+(for sufficiently large \(l\) in the inner phases).
+This also covers the ties of adjacent phases not in the listing.
+If positive definiteness is required, the perturbation toward \(I/m\)
+preserves the strict inequality by continuity.
+For \(m=1,2\) the entries are simultaneously diagonalizable
+(\(A_2=I-A_1\) for \(m=2\)); the scalar inequality holds in
+each coordinate. This finishes Theorem~\ref{th:lifting}.
+
+\appendix
+\section{The anchor inequality}\label{app:anchor}
+
+We give the trace sum of squares of Ye and Astra \cite{anchor}
+and its verification. For \(m\ge3\), set \(k=m-1\),
+\(t_1=m(m-1)\), \(\gamma_1=2m-1\), and \(K=\sum_i A_i X A_i\)
+for Hermitian \(X\). We show that
+\begin{equation}\label{eq:anchor-sos}
+ \Tr(X^2S)+t_1\Tr(XRXS)-\gamma_1\Tr K^2\ge0 .
+\end{equation}
+Adding \(\gamma_1\|I-K\|_{\HS}^2\) then yields
+\(\mathcal Q_{t_1,\gamma_1}(X)\ge0\), as \(\Tr K=\Tr XS\).
+
+For each \(i\), let \(w_i\) have entries
+\[
+ E_j=(A_j-A_i)XA_j,\quad F_j=A_jX(A_j-A_i),\quad
+ Z_{jl}=(A_j-A_i)X(A_l-A_i)
+\]
+with the indices different from \(i\), and \(j\ne l\) for \(Z_{jl}\).
+Define the symmetric matrix \(H_k\) indexed by these entries by
+the following table (entries with interchanged row and column
+are filled by symmetry).
+\[
+\begin{array}{lll}
+\text{Entry} & \text{Condition} & \text{Value}\\ \hline
+E_j,E_l & j=l,\ j\ne l & k(k+5)/2,\ (k-3)/2\\
+F_j,F_l & j=l,\ j\ne l & k(k+5)/2,\ (5k+1)/2\\
+E_j,F_l & j=l,\ j\ne l & -(k+1)(k+2)/2,\ -(k+1)\\
+E_j,Z_{lh} & j=l,\ j\ne l & k/2,\ -1/2\\
+F_j,Z_{lh} & j=l,\ j=h,\ j\notin\{l,h\} & -(k-1)/2,\ 0,\ 1/2\\
+Z_{jl},Z_{ph} & (j,l)=(p,h) & k-1\\
+Z_{jl},Z_{ph} & (j,l)\ne(p,h),\ j=p\text{ or }l=h & -1/2\\
+Z_{jl},Z_{ph} & j\ne p,\ l\ne h & 0
+\end{array}
+\]
+The sum \(\sum_{i,a,b}(H_k)_{ab}\operatorname{Re}\Tr
+((w_i)_a^* A_i(w_i)_b)\) equals the left side
+of~\eqref{eq:anchor-sos}. For completeness, the following
+table gives the expansion by the six types of entries. Capital
+letters \(A,B\) in a word stand for independently summed
+matrix labels (coincidences are allowed), and a word stands for
+the real part of its trace. Cyclic rotations, reversals and
+consistent renamings represent the same sum. Blank entries are zero.
+\begin{center}
+\small\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrrrrr@{}}
+\(\text{Word}\)&\(EE\)&\(EF\)&\(EZ\)&\(FF\)&\(FZ\)&\(ZZ\)\\ \hline
+\texttt{AAAXBBX} & $\frac{m^{2}}{2} + m$ &  & $- m$ &  &  & $\frac{m^{2}}{2} - m$ \\
+\texttt{AAAXX} & $\frac{m}{2} - 2$ &  & $1$ &  &  & $1 - \frac{m}{2}$ \\
+\texttt{AABXABX} &  & $- m^{2} + m$ & $m^{2} - m$ &  &  &  \\
+\texttt{AABXBBX} & $- m^{2} - 2 m$ & $m^{2} - m$ & $2 m$ &  &  & $m$ \\
+\texttt{AABXBX} & $4 - m$ & $2 m$ & $- m - 2$ &  &  & $-2$ \\
+\texttt{AAXAAX} & $\frac{m^{2}}{2} + m$ & $- m^{2} + m$ & $- m$ & $\frac{m^{2}}{2} - m$ & $m$ & $- m$ \\
+\texttt{AAXAX} &  & $- 2 m$ & $1$ & $\frac{5 m}{2} - 2$ & $-2$ & $3 - \frac{m}{2}$ \\
+\texttt{AAXBABX} &  &  &  & $\frac{m^{2}}{2} - m$ & $- m^{2} + 2 m$ & $\frac{m^{2}}{2} - m$ \\
+\texttt{AAXX} &  &  & $1$ &  &  &  \\
+\texttt{ABAXABX} &  & $m^{2} - m$ & $- m^{2} + m$ & $- m^{2} + 2 m$ & $m^{2} - 3 m$ & $m$ \\
+\texttt{ABAXBX} &  &  &  &  & $m - 1$ & $1 - m$ \\
+\texttt{ABXABX} &  &  &  &  & $1$ & $-1$ \\
+\texttt{ABXBAX} & $\frac{m}{2} - 2$ &  & $m$ & $2 - \frac{5 m}{2}$ & $2 - m$ & $-1$ \\
+\texttt{AXAX} &  &  & $-1$ &  &  & $1$ \\
+\end{tabular}
+\end{center}
+Here is a coefficient rule to verify the table. For each pair of
+entry types, assign equality patterns to the internal indices
+of both entries, excluding the anchor \(i\) and respecting the
+distinct indices in a \(Z\). The table of \(H_k\) then fixes the
+multiplying coefficient, doubled if the entry types differ.
+Expand each entry into its two or four words, reverse the first
+word, and insert \(A_i\) between them. Sum over distinct labels
+in this pattern by replacing that sum with
+\[
+\sum_{\pi}\ \prod_{D\in\pi}(-1)^{|D|-1}(|D|-1)!
+  \sum_{\text{one unrestricted index per block of }\pi}.
+\]
+The outer sum runs over partitions of the set of distinct labels
+of the pattern (including \(i\)); a block of \(\pi\) identifies
+the labels in it. This rule follows since for any assignment of
+indices the coefficient factors over its equality classes,
+and the factor for a class of size \(s\) is the sum of the signs
+of all permutations of \(s\) letters, grouped by cycle partition.
+It is \(1\) if \(s=1\), and \(0\) otherwise. In each resulting word,
+delete a label that occurs once using \(\sum_iA_i=I\);
+a free label that does not occur contributes \(m\).
+For example the \(AAXX\) entry comes only from the \(EZ\) block
+and has coefficient \(1\). After the deletions at most two labels
+remain, as there were only five matrix factors. Collecting words
+under the indicated equivalences gives the displayed rows.
+Summing horizontally leaves only \(AAAXBBX,AAXX,ABXBAX\),
+with coefficients \(t_1,1,-\gamma_1\), establishing the identity.
+
+For positivity of \(H_k\), its entries act on any vector column
+\((\ell_j,r_j,z_{jl})\) in a complex Hilbert space. Use the means
+\(\ell_0,r_0,z_0\) (over all indices of the corresponding entries),
+and the mean-zero parts \(\ell_j^\circ=\ell_j-\ell_0\),
+\(r_j^\circ=r_j-r_0\). Put \(a_j=\sum_{l\ne j}z_{jl}\) and
+\(b_j=\sum_{l\ne j}z_{lj}\). With \(u_j=a_j-(k-1)z_0\) and
+\(v_j=b_j-(k-1)z_0\), let \(\alpha_j=(u_j+v_j)/(2(k-2))\)
+if \(k>2\) and \(0\) if \(k=2\), and let \(\beta_j=(u_j-v_j)/(2k)\).
+Then
+\[
+z_{jl}=z_0+\alpha_j+\alpha_l+\beta_j-\beta_l+\omega_{jl},
+\]
+where the residual array has zero row and column sums; for \(k=2\)
+use \(u_j+v_j=0\). The four arrays on the right (constant,
+symmetric, antisymmetric, residual) are mutually orthogonal.
+In particular \(\sum\|z_{jl}\|^2\) is
+\(k(k-1)\|z_0\|^2+2(k-2)\sum\|\alpha_j\|^2+
+2k\sum\|\beta_j\|^2+\sum\|\omega_{jl}\|^2\).
+
+The quadratic form of \(H_k\) can now be written as
+\begin{align*}
+&k(k-1)\|z_0+(\ell_0-r_0)/2\|^2
+    +k\,N_0[\ell_0,r_0]\\
+&\quad +(k-2)(k+2)\sum_j
+ \left\|\alpha_j+\frac{k+1}{2(k+2)}(\ell_j^\circ-r_j^\circ)\right\|^2\\
+&\quad +k^2\sum_j
+ \left\|\beta_j+\frac{(k+1)\ell_j^\circ-(k-1)r_j^\circ}{2k}\right\|^2
+    +\sum_j N_1[\ell_j^\circ,r_j^\circ]+k\sum_{j\ne l}\|\omega_{jl}\|^2 .
+\end{align*}
+For a symmetric matrix \(N\), \(N[x,y]\) means
+\(N_{11}\|x\|^2+2N_{12}\operatorname{Re}\langle x,y\rangle+
+N_{22}\|y\|^2\). The two matrices are
+\[
+\begin{gathered}
+N_0=\frac14
+\begin{pmatrix}
+4k^2+k+7&-(6k^2+5k+1)\\
+-(6k^2+5k+1)&12k^2+k-1
+\end{pmatrix},\\
+N_1=\frac1{k+2}
+\begin{pmatrix}
+(k+1)(2k+3)&-(k+1)^2\\
+-(k+1)^2&k^2+k-1
+\end{pmatrix}.
+\end{gathered}
+\]
+To verify the squares, denote the sums of the entries
+of \(\ell,r,z\) by \(\ell_\Sigma,r_\Sigma,z_\Sigma\), respectively.
+The \(EE,FF,EF,ZZ,EZ,FZ\) contributions read directly
+from the entries of \(H_k\) are, in that order,
+\begin{align*}
+ &\tfrac{(k+1)(k+3)}2\sum\|\ell_j\|^2+
+        \tfrac{k-3}{2}\|\ell_\Sigma\|^2,\\
+ &\tfrac{(k-1)(k+1)}2\sum\|r_j\|^2+
+        \tfrac{5k+1}{2}\|r_\Sigma\|^2,\\
+ &-k(k+1)\operatorname{Re}\sum\langle\ell_j,r_j\rangle
+    -2(k+1)\operatorname{Re}\langle\ell_\Sigma,r_\Sigma\rangle,\\
+ &k\sum_{j\ne l}\|z_{jl}\|^2-\tfrac12\sum_j(\|a_j\|^2+\|b_j\|^2),\\
+ &\operatorname{Re}\big((k+1)\sum_j\langle\ell_j,a_j\rangle
+                  -\langle\ell_\Sigma,z_\Sigma\rangle\big),\\
+ &\operatorname{Re}\big(\langle r_\Sigma,z_\Sigma\rangle
+                -k\sum_j\langle r_j,a_j\rangle-\sum_j\langle r_j,b_j\rangle\big).
+\end{align*}
+Substitute the means and
+\(a_j=(k-1)z_0+(k-2)\alpha_j+k\beta_j\),
+\(b_j=(k-1)z_0+(k-2)\alpha_j-k\beta_j\); completing squares
+in \(z_0,\alpha_j,\beta_j\) gives the stated decomposition.
+The two determinants are
+\[
+\det N_0=\frac{(k-2)(k-1)^2(3k+1)}4,\qquad
+\det N_1=\frac{(k+1)(k^2-2)}{k+2}.
+\]
+The upper-left entries are positive, so both matrices are positive
+semidefinite for \(k\ge2\).
+It follows that \(H_k\succeq0\). Apply the form to the column with
+entries \(A_i^{1/2}(w_i)_a\) in Hilbert--Schmidt space and sum
+over \(i\), proving~\eqref{eq:anchor-sos} and the anchor.
+
+\section{The three-term right endpoint}\label{app:three}
+
+We use the trace identity of the three-term project notes
+\cite{round8}. In this appendix \(m=3\), \(T=3\) and \(G=7/2\).
+Write \(U_i=3A_i-I\), \(V_i=A_{i+2}-A_{i+1}\) with cyclic
+indices. At anchor \(i\) omit the subscript in the following
+two word columns:
+\[
+\begin{split}
+w_i^{\rm e}&=(I,X,UX,XU,U^2X,V^2X,UXU,VXV,XU^2,XV^2),\\
+w_i^{\rm o}&=(VX,XV,UVX,VUX,UXV,VXU,XUV,XVU).
+\end{split}
+\]
+For a symmetric real matrix \(H\) and word column \(w\) put
+\(\mathcal G_i(H;w)=\sum_{a,b}H_{ab}\operatorname{Re}\Tr(w_a^*A_iw_b)\).
+For the two matrices specified below, the exact identity is
+\begin{equation}\label{eq:three}
+\mathcal Q_{3,7/2}(X)=\frac1{13824}
+  \sum_{i=1}^3\bigl(\mathcal G_i(H_{\rm e};w_i^{\rm e})
+                  +\mathcal G_i(H_{\rm o};w_i^{\rm o})\bigr).
+\end{equation}
+The upper triangles, row by row starting on the diagonal,
+are as follows; fill the lower triangles by symmetry.
+\begin{verbatim}
+48384 -16128 4464 -4824 -3258 -15246 -3693 -6273 -933 -2133
+6144 -2656 1930 1222 6054 2099 417 114 -774
+3584 -2182 -1118 -1842 -1181 1149 270 1614
+2160 904 792 216 492 -144 -288
+920 492 -124 672 -78 174
+8280 3192 -1656 -132 -1800
+2088 -2004 -432 -1800
+5976 720 3888
+504 576
+3672
+\end{verbatim}
+\begin{verbatim}
+7056 -5958 -4023 -189 1296 720 1080 -1080
+5328 3321 243 -1296 -720 -1080 792
+2709 -441 -936 72 -720 720
+2709 360 -2592 0 -144
+792 -216 144 -144
+2808 144 -216
+576 -144
+504
+\end{verbatim}
+
+Here are details of the finite verification in~\eqref{eq:three}.
+Set \(A_1=a,A_2=b,A_3=I-a-b\) in the free algebra on
+\(a,b,X\). Canonicalize a word by the lexicographically least cyclic
+rotation of it or of its reversal, with \(X<a<b\). Real traces
+are unchanged. The following table lists coefficients on both
+sides after division by the indicated \(13824\) on the right.
+The involution exchanging \(a,b\) preserves both sides, so list
+only the lexicographically smaller representative of a pair
+interchanged by this involution; the displayed coefficient
+is for each class separately. All unlisted coefficients are zero.
+\begin{center}
+\small
+\begin{tabular}{@{}lr@{\qquad}lr@{\qquad}lr@{}}
+\text{Word}&\text{Coeff.}&\text{Word}&\text{Coeff.}&\text{Word}&\text{Coeff.}\\ \hline
+\texttt{1}&\(7/2\)&\texttt{XXaab}&\(-6\)&\texttt{XaaXbb}&\(36\)\\
+\texttt{X}&\(-7\)&\texttt{XXaba}&\(-3\)&\texttt{XabXab}&\(18\)\\
+\texttt{XX}&\(4\)&\texttt{XaXaa}&\(-36\)&\texttt{XabXba}&\(18\)\\
+\texttt{Xa}&\(14\)&\texttt{XaXab}&\(-54\)&\texttt{XaaXaab}&\(-12\)\\
+\texttt{XXa}&\(-17\)&\texttt{XaXbb}&\(-36\)&\texttt{XaaXaba}&\(-6\)\\
+\texttt{Xaa}&\(-14\)&\texttt{XaXaab}&\(12\)&\texttt{XaaXabb}&\(-12\)\\
+\texttt{Xab}&\(-14\)&\texttt{XaXaba}&\(6\)&\texttt{XaaXbab}&\(-6\)\\
+\texttt{XXaa}&\(17\)&\texttt{XaXabb}&\(12\)&\texttt{XaabXab}&\(-6\)\\
+\texttt{XXab}&\(26\)&\texttt{XaXbab}&\(6\)&\texttt{XaabXba}&\(-6\)\\
+\texttt{XaXa}&\(18\)&\texttt{XaaXaa}&\(18\)&\texttt{XabXaba}&\(-6\)\\
+\texttt{XaXb}&\(36\)&\texttt{XaaXab}&\(54\)&&
+\end{tabular}
+\end{center}
+Explicitly, to obtain the right column coefficients expand
+\(X\) as a single letter, \(U_i=3A_i-I\), and
+\(V_i=A_{i+2}-A_{i+1}\) as above. If \(w_a=\sum_x c_{a,x}x\) and
+\(A_i=\sum_y d_{i,y}y\), the contribution to class \(v\) from entries
+\(a,b\) is
+\[
+H_{ab}\!\!\!\sum_{\substack{x,y,z\\
+          \operatorname{can}(x^{\rm rev}yz)=v}}
+c_{a,x}d_{i,y}c_{b,z}.
+\]
+Here \(\operatorname{can}\) uses only rotation and reversal;
+the exchange of \(a,b\) is used solely to shorten the printed table.
+Summing over \(i\) and both matrices and dividing by \(13824\)
+gives the table. On the left, expand
+\(7I/2-7XS+X^2S+3XRXS\) with the same rule.
+For example the empty-word coefficient on the right is
+\(48384/13824=7/2\); \(w_1^{\rm e}=I\) is the only entry
+without \(X\), and \(\sum_iA_i=I\). Thus the displayed finite
+coefficient computation proves~\eqref{eq:three} in all dimensions.
+
+The leading principal blocks of sizes \(8,6\) of \(H_{\rm e},H_{\rm o}\),
+respectively, are positive definite. To check this, the successive
+pivots, obtained by starting with the top-left entry and passing to
+the Schur complement at each step, are
+\[
+\begin{gathered}
+H_{\rm e}:\quad 48384,\ 768,\ \tfrac{29312}{21},\
+ \tfrac{805881435}{1875968},\ \tfrac{21929027136}{53725429},\\
+ \tfrac{175752947141493}{146193514240},\
+ \tfrac{17708554973633574}{58584315713831},\
+ \tfrac{792610213758331446}{2951425828938929};\\
+H_{\rm o}:\quad 7056,\ \tfrac{58239}{196},\
+ \tfrac{284616}{719},\ \tfrac{7818120}{3953},\
+ \tfrac{611968}{2413},\ \tfrac{935354}{3415}.
+\end{gathered}
+\]
+Direct multiplication annihilates the following two independent
+vectors in each case:
+\[
+\begin{array}{ll}
+H_{\rm e}: &(2,4,2,2,1,1,1,1,1,1),\quad
+            (2,3,3,3,3,1,3,1,3,1);\\
+H_{\rm o}: &(2,2,1,1,1,1,1,1),\quad(1,1,1,-1,1,-1,1,-1).
+\end{array}
+\]
+The indicated ranks are therefore \(8,6\), and the Schur complements
+of the leading blocks vanish. Both matrices are positive semidefinite,
+so~\eqref{eq:three} implies the bound by~\eqref{eq:completion}.
+
+For equality in the inverse-trace bound, let \(X=G(I+TR)^{-1}\).
+Now \(\mathcal Q_{T,G}(X)=0\).
+The coefficient vector of \(I-(X+UX)/3=I-A_iX\) is orthogonal
+to the two displayed kernel vectors of \(H_{\rm e}\), so it is in
+the range of \(H_{\rm e}\).
+The vanishing of the positive semidefinite form in Hilbert--Schmidt
+space for each \(i\) implies
+\(A_i^{1/2}(I-A_iX)=0\). Hence \(A_i^2X=A_i=XA_i^2\) and \(A_i\)
+commutes with \(X\), being the positive square root of \(A_i^2\).
+On an \(X\)-eigenspace with eigenvalue \(\alpha>0\),
+each \(A_i\) is \(1/\alpha\) times a projection, whose sum is
+\(\alpha I\). There \(S=I/\alpha,\ R=I/\alpha^2\), and
+\(X=G(I+TR)^{-1}\) implies \(\alpha+T/\alpha=G\).
+The two possibilities are \(k\) and \(b\); their spectra and
+converses are as in Theorem~\ref{th:endpoint}.
+
+\begin{thebibliography}{9}
+
+\bibitem{math110}
+math110,
+\emph{How does one prove the determinant inequality
+\(\det(6(A^3+B^3+C^3)+I_n)\ge5^n\det(A^2+B^2+C^2)\)?},
+Mathematics Stack Exchange, question 860294, 2014.
+\url{https://math.stackexchange.com/q/860294}.
+
+\bibitem{cube}
+Cubesteak, Answer to question 860294, Mathematics Stack Exchange,
+answer 5147902.
+\url{https://math.stackexchange.com/a/5147902}.
+
+\bibitem{anchor}
+Z.~Ye and GPT-6 Astra,
+\emph{A trace--SOS determinantal inequality for partitions of the identity},
+project manuscript, 2026.
+
+\bibitem{krs}
+S.~A. Kruglyak, V.~I. Rabanovich, and Yu.~S. Samoilenko,
+\emph{On sums of projections},
+Funktsional. Anal. i Prilozhen. \textbf{36} (2002), no.~3, 20--35;
+English translation, Funct. Anal. Appl. \textbf{36}, no.~3, 182--195.
+\url{https://doi.org/10.1023/A:1020193804109}.
+
+\bibitem{round8}
+\emph{Stage 7, Round 8: The three-term endpoints},
+project research notes (in Chinese), 2026.
+
+\end{thebibliography}
+
+\end{document}
+ 
